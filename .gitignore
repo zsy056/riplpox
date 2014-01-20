@@ -1,4 +1,5 @@
 *.pyo
 *.egg-info
+*.pyc
 build
 dist
