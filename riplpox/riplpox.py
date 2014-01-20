@@ -180,8 +180,8 @@ class RipLController(EventMixin):
 
     # Form OF match
     match = of.ofp_match()
-    match.dl_src = EthAddr(src).toRaw()
-    match.dl_dst = EthAddr(dst).toRaw()
+    match.dl_src = EthAddr(self.t.id_gen(dpid = src).mac_str()).toRaw()
+    match.dl_dst = EthAddr(self.t.id_gen(dpid = dst).mac_str()).toRaw()
 
     dst_host_name = self.t.id_gen(dpid = dst).name_str()
     final_out_port, ignore = self.t.port(route[-1], dst_host_name)
@@ -252,9 +252,9 @@ class RipLController(EventMixin):
       self._flood(event)
     else:
       hosts = self._raw_dpids(self.t.layer_nodes(self.t.LAYER_HOST))
-      if packet.src.toInt() not in hosts:
+      if int(packet.src.toRaw().encode('hex'), 16) not in hosts:
         raise Exception("unrecognized src: %s" % packet.src)
-      if packet.dst.toInt() not in hosts:
+      if int(packet.dst.toRaw().encode('hex'), 16) not in hosts:
         raise Exception("unrecognized dst: %s" % packet.dst)
       raise Exception("known host MACs but entries weren't pushed down?!?")
 
