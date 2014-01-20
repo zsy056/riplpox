@@ -78,7 +78,7 @@ class Switch (EventMixin):
     msg.buffer_id = buffer_id
     self.connection.send(msg)
 
-  def install(self, port, match, buf = -1, idle_timeout = 0, hard_timeout = 0,
+  def install(self, port, match, buf = None, idle_timeout = 0, hard_timeout = 0,
               priority = of.OFP_DEFAULT_PRIORITY):
     msg = of.ofp_flow_mod()
     msg.match = match
